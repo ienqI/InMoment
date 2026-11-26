@@ -1,6 +1,6 @@
 # Third-party source locations and library replacement
 
-Updated for InMoment 0.14.31. The [Windows installer release](https://github.com/lenqi777/InMoment/releases/tag/v0.14.31-installer) provides the installer, source collections, notices, and checksums. This file maps the libraries to their upstream sources and documents replacement steps.
+This file identifies source and replacement information for libraries bundled with InMoment 1.0.0. The matching source archives retain their original 0.14.31 filenames because the bundled dependency versions are unchanged. The original license texts govern. [Download page](https://ienqi.github.io/InMoment/#release) · [Companion archive list](OPEN_SOURCE_DOWNLOADS.md)
 
 ## What the application includes
 
@@ -47,11 +47,23 @@ The upstream sharp documentation says a globally installed libvips is unsupporte
 
 ## Offline OCR and OpenCV's FFmpeg library
 
-The OCR runtime retains the original `opencv-python-headless` 5.0.0.93 wheel and its `LICENSE-3RD-PARTY.txt`. Its `cv2/opencv_videoio_ffmpeg500_64.dll` uses LGPL 2.1 FFmpeg code. The bundled DLL's SHA-256 (`7aabff029d1fa47cf56ede4dbbe05dc62da3208f07cd16471d4c966a33f9aa31`) matches the [upstream DLL and recipe revision](https://github.com/opencv/opencv_3rdparty/tree/06dc20cad65dc7fcf784f70c95d46750520889a7/ffmpeg). The corresponding-source archive `InMoment-0.14.31-ocr-corresponding-source.zip` includes the complete OpenCV build source at `a0a660fcb1e58a295e6caa6aee64ed4d369b0181`, FFmpeg 7.1 and its configured dependencies, original recipes, notices, and relinking and replacement steps. Close InMoment and the OCR helper before replacing the local plugin DLL with an ABI-compatible build, and test against a separate data directory. Artifact identity was checked against upstream; a byte-identical rebuild has not been tested. This section supersedes the preparation status printed inside the unchanged portable ZIP.
+The pinned `opencv-python-headless` 5.0.0.93 wheel retains its original notices, including the LGPL 2.1 text for `cv2/opencv_videoio_ffmpeg500_64.dll`. The bundled DLL (SHA-256 `7aabff029d1fa47cf56ede4dbbe05dc62da3208f07cd16471d4c966a33f9aa31`) matches the x64 DLL published by OpenCV in [06dc20ca](https://github.com/opencv/opencv_3rdparty/commit/06dc20cad65dc7fcf784f70c95d46750520889a7). The companion archive carries the official [corresponding source set](https://github.com/opencv/opencv_3rdparty/commit/664c0098dcb47b361f20c1d6a518653c23f5f2b5), the [full pinned OpenCV source](https://github.com/opencv/opencv/tree/a0a660fcb1e58a295e6caa6aee64ed4d369b0181), build instructions, and missing OpenH264 headers recovered from the same upstream tag.
 
-The root `ffmpeg.dll` is a separate shared library shipped by [Electron 44.7.2](https://github.com/electron/electron/releases/tag/v44.7.2). The portable package retains Electron's `LICENSES.chromium.html` and `ELECTRON-LICENSE.txt`. The archive `InMoment-0.14.31-electron-ffmpeg-source.zip` includes the fixed Chromium FFmpeg source, Electron's FFmpeg patch, shared library build settings, and replacement guidance.
+For experiments, keep an unmodified copy. Close InMoment, replace the independent DLL beneath `resources/app/offline-ocr/site-packages/cv2/` with a compatible x64 build, or start the application with the process environment variable `OPENCV_VIDEOIO_PLUGIN_FFMPEG` set to the absolute path of an ABI-compatible DLL. The bundled OpenCV successfully loaded the original-compatible DLL under a second path in a no-inference test. Restore the original file if replacement fails. The build-time package verifier checks the unmodified distribution; it is not a restriction on replacing libraries in an installed copy. The documented replacement test does not claim a bit-for-bit rebuild.
 
 The OCR DLL is separate from the standalone `ffmpeg.exe` and `ffprobe.exe` commands used for local GPT and DeepSeek MP4 analysis. Users provide those commands separately for that route.
+
+The Shapely 2.2.0 Windows OCR wheel also bundles GEOS 3.14.1 and its C API in `resources/app/offline-ocr/site-packages/shapely.libs/`. The companion GEOS archive preserves its official source, the Shapely Windows build recipe and the wheel's LGPL notice. Library replacement instructions and the scope of the binary-to-source checks are in that archive.
+
+The NumPy 2.5.4 Windows OCR wheel bundles OpenBLAS 0.3.34 in `resources/app/offline-ocr/site-packages/numpy.libs/`. The companion OpenBLAS archive contains the source and recipe pinned by its upstream wheel build, patches, original notices and binary match evidence. Its build notes record the GCC Runtime Library Exception 3.1 and the outstanding GCC and MinGW-w64 runtime package versions.
+
+## Chromium FFmpeg and PDF Canvas
+
+Electron 44.7.2 installs a separate root-level `ffmpeg.dll`. Its corresponding source attachment follows Electron's pinned Chromium revision and FFmpeg patches and includes the Windows x64 configuration. Close InMoment and work on a copy before replacing it with a binary built for the same Electron/Chromium ABI.
+
+The native PDF Canvas package is `@napi-rs/canvas-win32-x64-msvc` 1.1.0. Its companion source archive maps the native binary's SBOM to upstream license material and versioned MPL source packages. The application and launcher retain their own licenses.
+
+The four bundled PDF Liberation Sans fonts match [PDF.js 6.5.438](https://github.com/mozilla/pdf.js/tree/v6.5.438/external/standard_fonts). The separate attachment includes the original Liberation Sans 1.07.4 editable SFD files, scripts and GPLv2 font exception. These are the versioned sources; a bit-for-bit recreation of Mozilla's font files has not been tested.
 
 ## Other source and notice details
 

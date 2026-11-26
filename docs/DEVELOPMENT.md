@@ -1,6 +1,6 @@
 # 开发与打包
 
-当前应用版本为 **0.14.31**，目标为 Windows 11 x64。开发需要 Node.js 24+、pnpm 11.25.0，以及 Windows 自带的 .NET Framework 编译器与 System.Speech 引用程序集。普通下载用户使用完整便携包，无需这些开发工具。
+本分支保存 0.14.31 的公开源码快照，目标为 Windows 11 x64。开发需要 Node.js 24+、pnpm 11.25.0，以及 Windows 自带的 .NET Framework 编译器与 System.Speech 引用程序集。当前稳定安装版为 **1.0.0**，在官方页面点击「下载 Windows 版」。[InMoment 下载页](https://ienqi.github.io/InMoment/)
 
 ## 安装与隔离启动
 
@@ -52,7 +52,7 @@ pnpm run package
 
 默认完整包要求提前准备离线转写、语义模型和图片 OCR。输出在 `dist/InMoment-版本-win-x64-构建标识/`，`dist/latest.txt` 记录最近一次成功输出目录。精简开发包使用 `pnpm run package:minimal`，可按需传入 `--with-asr`、`--with-semantic` 或 `--with-ocr`。
 
-本版候选附件命名为 `InMoment-0.14.31-win-x64-full.zip`，附 SHA-256 校验文件。ZIP 包含整个便携目录中的程序、`resources`、离线组件、安装脚本及许可；GitHub 自动生成的源码压缩包供开发使用。
+这里的命令构建本分支的 0.14.31 便携目录。面向用户的安装包及 SHA-256 校验文件由官方下载页提供。中英文 README、使用指南、版本清单和 GitHub Release 正文的软件下载入口均指向该页。[版本与校验信息](https://ienqi.github.io/InMoment/#release)
 
 脚本按允许清单复制源码、生产依赖闭包、文档和模型，保留许可，重验模型哈希，在源码目录外导入 Transformers 运行库，禁止网络且不执行模型。语音包只包含新 CLI、两个 ONNX Runtime DLL、SenseVoice 模型、词表和许可；不会夹带旧 Whisper 模型、下载缓存、安装备份或测试录音。node scripts/verify-portable.cjs <解压目录> 可以复验完整包；应对最终 ZIP 解压后的目录再次执行。
 
